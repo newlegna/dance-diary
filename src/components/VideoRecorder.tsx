@@ -159,8 +159,19 @@ export function VideoRecorder({ onSave }: VideoRecorderProps) {
   }, [stopStream]);
 
   useEffect(() => {
-    if (mode === "camera") startCamera();
-    return stopStream;
+    if (mode !== "camera") {
+      stopStream();
+      return;
+    }
+
+    const cameraTimer = window.setTimeout(() => {
+      void startCamera();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(cameraTimer);
+      stopStream();
+    };
   }, [mode, startCamera, stopStream]);
 
   useEffect(() => {

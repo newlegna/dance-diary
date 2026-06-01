@@ -10,13 +10,17 @@ import {
 import { createId, saveJourney } from "@/lib/storage";
 import type { Journey, JourneyDuration } from "@/lib/types";
 
+const defaultTemplate = JOURNEY_TEMPLATES[0];
+
 export default function NewJourneyPage() {
   const router = useRouter();
-  const [name, setName] = useState(JOURNEY_TEMPLATES[0].name);
-  const [description, setDescription] = useState(JOURNEY_TEMPLATES[0].description);
-  const [goal, setGoal] = useState(JOURNEY_TEMPLATES[0].goal);
-  const [duration, setDuration] = useState<JourneyDuration>(7);
-  const [danceStyle, setDanceStyle] = useState(DEFAULT_STYLE);
+  const [name, setName] = useState(defaultTemplate.name);
+  const [description, setDescription] = useState(defaultTemplate.description);
+  const [goal, setGoal] = useState(defaultTemplate.goal);
+  const [duration, setDuration] = useState<JourneyDuration>(
+    defaultTemplate.duration,
+  );
+  const [danceStyle, setDanceStyle] = useState(defaultTemplate.danceStyle);
   const [isPublic, setIsPublic] = useState(false);
   const [saving, setSaving] = useState(false);
 
