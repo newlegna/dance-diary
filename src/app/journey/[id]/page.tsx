@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { ClipTimeline } from "@/components/ClipTimeline";
 import { danceStyleLabel, formatDate } from "@/lib/format";
 import {
+  deleteClip,
   deleteJourney,
   getClipsForJourney,
   getJourney,
@@ -40,6 +41,11 @@ export default function JourneyPage() {
     if (!confirmed) return;
     await deleteJourney(journey.id);
     router.push("/");
+  };
+
+  const handleDeleteClip = async (clip: Clip) => {
+    await deleteClip(clip.id);
+    setClips((current) => current.filter((item) => item.id !== clip.id));
   };
 
   if (loading) {
@@ -125,7 +131,11 @@ export default function JourneyPage() {
 
       <section className="space-y-4">
         <h2 className="font-display text-2xl font-bold">Progress timeline</h2>
-        <ClipTimeline journeyId={journey.id} clips={clips} />
+        <ClipTimeline
+          journeyId={journey.id}
+          clips={clips}
+          onDeleteClip={handleDeleteClip}
+        />
       </section>
     </div>
   );

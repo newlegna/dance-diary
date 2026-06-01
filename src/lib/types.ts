@@ -51,6 +51,7 @@ export interface CommunityPost {
   dayFrom: number;
   dayTo: number;
   likes: number;
+  comments: number;
   createdAt: string;
 }
 

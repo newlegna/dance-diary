@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { MOCK_COMMUNITY_POSTS } from "@/lib/constants";
+import { DANCE_STYLES, MOCK_COMMUNITY_POSTS } from "@/lib/constants";
 import { danceStyleLabel, formatRelativeDate } from "@/lib/format";
 
 const commentPrompts = [
   "What improved?",
   "What should I work on next?",
   "Send encouragement",
+  "Give beginner-friendly feedback",
 ];
 
 export default function CommunityPage() {
@@ -15,6 +16,7 @@ export default function CommunityPage() {
   const [likes, setLikes] = useState<Record<string, number>>(() =>
     Object.fromEntries(MOCK_COMMUNITY_POSTS.map((post) => [post.id, post.likes])),
   );
+  const [followed, setFollowed] = useState<Record<string, boolean>>({});
 
   const posts =
     filter === "all"
@@ -38,9 +40,12 @@ export default function CommunityPage() {
 
       <div className="flex flex-wrap gap-2">
         {[
-          ["all", "All styles"],
-          ["hip-hop", "Hip Hop"],
-        ].map(([value, label]) => (
+          { value: "all", label: "All styles" },
+          ...DANCE_STYLES.map((style) => ({
+            value: style.value,
+            label: style.label,
+          })),
+        ].map(({ value, label }) => (
           <button
             key={value}
             type="button"
@@ -69,9 +74,27 @@ export default function CommunityPage() {
                   {post.journeyName} · {danceStyleLabel(post.danceStyle)}
                 </p>
               </div>
-              <span className="text-xs text-[var(--text-muted)]">
-                {formatRelativeDate(post.createdAt)}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-[var(--text-muted)]">
+                  {formatRelativeDate(post.createdAt)}
+                </span>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFollowed((current) => ({
+                      ...current,
+                      [post.id]: !current[post.id],
+                    }))
+                  }
+                  className={`rounded-full px-3 py-1.5 text-xs font-medium ${
+                    followed[post.id]
+                      ? "bg-[var(--accent-soft)] text-[var(--accent)]"
+                      : "border border-[var(--border)]"
+                  }`}
+                >
+                  {followed[post.id] ? "Following" : "Follow journey"}
+                </button>
+              </div>
             </div>
 
             <div className="mt-5 grid gap-4 rounded-3xl bg-[var(--bg-elevated)] p-4 sm:grid-cols-2">
@@ -100,6 +123,9 @@ export default function CommunityPage() {
               >
                 ♥ {likes[post.id]} likes
               </button>
+              <span className="rounded-full border border-[var(--border)] px-4 py-2 text-sm">
+                {post.comments} supportive comments
+              </span>
               {commentPrompts.map((prompt) => (
                 <span
                   key={prompt}

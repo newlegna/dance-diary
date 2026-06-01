@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   DANCE_STYLES,
-  DEFAULT_STYLE,
   JOURNEY_TEMPLATES,
 } from "@/lib/constants";
 import { createId, saveJourney } from "@/lib/storage";
