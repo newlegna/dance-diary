@@ -20,7 +20,9 @@ export default function NewJourneyPage() {
   const [duration, setDuration] = useState<JourneyDuration>(
     defaultTemplate.duration,
   );
-  const [danceStyle, setDanceStyle] = useState(defaultTemplate.danceStyle);
+  const [danceStyle, setDanceStyle] = useState<Journey["danceStyle"]>(
+    defaultTemplate.danceStyle,
+  );
   const [isPublic, setIsPublic] = useState(false);
   const [saving, setSaving] = useState(false);
 
